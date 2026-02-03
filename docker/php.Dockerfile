@@ -10,10 +10,11 @@ RUN apk add --no-cache \
     icu-dev \
     g++ \
     make \
-    autoconf
+    autoconf \
+    postgresql-dev  # <--- Library PostgreSQL untuk Alpine
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql gd zip intl
+RUN docker-php-ext-install pdo_pgsql pgsql gd zip intl
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
