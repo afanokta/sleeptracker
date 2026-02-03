@@ -26,5 +26,5 @@ services:
       - app
 
   networks:
-  laravel-network:
-    driver: bridge
+    laravel-network:
+      driver: bridge
