@@ -3,7 +3,6 @@
 # =========================
 FROM php:8.3-fpm-alpine AS build
 
-# System dependencies
 RUN apk add --no-cache \
     git \
     unzip \
@@ -12,39 +11,33 @@ RUN apk add --no-cache \
     libzip-dev \
     libpng-dev \
     libjpeg-turbo-dev \
-    freetype-dev
+    freetype-dev \
+    $PHPIZE_DEPS
 
-# PHP extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install \
-        pdo_mysql \
-        mbstring \
-        intl \
-        zip \
-        exif \
-        pcntl \
-        gd
+ && docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    intl \
+    zip \
+    exif \
+    pcntl \
+    gd
 
-# Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Copy composer files first (cache)
 COPY composer.json composer.lock ./
-
 RUN composer install \
     --no-dev \
     --no-interaction \
     --prefer-dist \
     --optimize-autoloader
 
-# Copy application
 COPY . .
 
-# Optimize Laravel
-RUN php artisan optimize \
- && chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache
 
 # =========================
 # Runtime stage
@@ -60,18 +53,11 @@ RUN apk add --no-cache \
     libjpeg-turbo \
     freetype
 
-# PHP extensions (runtime)
-RUN docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    intl \
-    zip \
-    exif \
-    pcntl \
-    gd
+# COPY PHP extensions from build
+COPY --from=build /usr/local/lib/php/extensions /usr/local/lib/php/extensions
+COPY --from=build /usr/local/etc/php/conf.d /usr/local/etc/php/conf.d
 
 WORKDIR /var/www
-
 COPY --from=build /var/www /var/www
 
 USER www-data
