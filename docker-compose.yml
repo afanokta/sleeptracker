@@ -24,3 +24,7 @@ services:
       - laravel-network
     depends_on:
       - app
+
+  networks:
+  laravel-network:
+    driver: bridge
