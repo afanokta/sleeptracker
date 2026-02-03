@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    image: sleeptracker:latest
+    container_name: sleeptracker
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - /var/www/amt-sleeptracker:/var/www
+    expose:
+      - "9000"
