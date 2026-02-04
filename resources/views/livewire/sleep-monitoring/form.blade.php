@@ -81,6 +81,7 @@
                         type="text"
                         id="waktu"
                         wire:model.defer="time"
+                        wire:ignore
                         :error="$errors->first('time')"
                     />
                 </div>
