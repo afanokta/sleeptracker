@@ -1,7 +1,7 @@
 <section class="w-full">
-    <x-heading title="{{ __('Driver') }}" subtitle="{{ __('Daftar Driver') }}" />
+    <x-heading title="{{ __('Admin') }}" subtitle="{{ __('Daftar Admin') }}" />
     
-    <flux:heading class="sr-only">{{ __('Driver List') }}</flux:heading>
+    <flux:heading class="sr-only">{{ __('Admin List') }}</flux:heading>
 
     <div class="flex flex-col gap-6">
         <div class="flex items-center justify-between">

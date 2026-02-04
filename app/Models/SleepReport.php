@@ -45,7 +45,7 @@ class SleepReport extends Model
                 $next = $tracks->get($i + 1);
 
                 if ($next && $next->input_type === 'wake') {
-                    $sleepDurationHours += $next->input_time->diffInMinutes($track->input_time) / 60;
+                    $sleepDurationHours += $track->input_time->diffInMinutes($next->input_time) / 60;
                 }
             }
         }

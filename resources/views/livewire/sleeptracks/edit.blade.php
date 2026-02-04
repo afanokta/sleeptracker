@@ -41,7 +41,7 @@
                     if ($track->input_type === 'sleep') {
                         $next = $tracks->get($i + 1);
                         if ($next && $next->input_type === 'wake') {
-                            $sleepDurationHours += $next->input_time->diffInMinutes($track->input_time) / 60;
+                            $sleepDurationHours += $track->input_time->diffInMinutes($next->input_time) / 60;
                         }
                     }
                 }
@@ -97,7 +97,7 @@
                                         {{ __('Lokasi') }}
                                     </th>
                                     <th class="px-4 py-2 text-left text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                                        {{ __('Durasi (jika pasangan)') }}
+                                        {{ __('Foto') }}
                                     </th>
                                 </tr>
                             </thead>
@@ -134,7 +134,7 @@
                                             {{ $track->location }}
                                         </td>
                                         <td class="px-4 py-2 text-xs text-zinc-600 dark:text-zinc-400">
-                                            {{ $durationText }}
+                                            <img src="{{ asset($track->photo) }}" alt="Foto Bukti" width="200">
                                         </td>
                                     </tr>
                                 @endforeach
