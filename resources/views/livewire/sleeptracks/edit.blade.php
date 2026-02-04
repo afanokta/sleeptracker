@@ -1,6 +1,6 @@
 <section class="w-full">
     <x-heading 
-        title="{{ __('Sleeptrack') }}" 
+        title="{{ __('Monitoring Jam Tidur AMT') }}" 
         subtitle="{{ __('Detail & Riwayat Tidur Supir (AMT)') }}" 
     />
 

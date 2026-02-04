@@ -9,6 +9,22 @@
                 {{ __('Tambah Driver') }}
             </flux:button>
         </div>
+        <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 space-y-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-xs font-medium text-zinc-500 dark:text-zinc-400 mb-1">
+                        {{ __('Nama AMT') }}
+                    </label>
+                    <input
+                        type="text"
+                        wire:model.live.debounce.500ms="driverName"
+                        class="w-full rounded-md border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 px-3 py-2 text-sm text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="{{ __('Cari nama AMT...') }}"
+                    >
+                </div>
+            </div>
+
+        </div>
 
         @if ($drivers->count() > 0)
             <div class="overflow-x-auto">

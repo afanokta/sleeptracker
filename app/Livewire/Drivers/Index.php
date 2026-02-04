@@ -11,12 +11,13 @@ use Flux\Flux;
 class Index extends Component
 {
     use WithPagination;
+    public ?string $driverName = null;
 
     public function delete(Driver $driver): void
     {
         $driver->delete();
         Flux::toast(
-            text: 'Driver berhasil disimpan',
+            text: 'Driver berhasil dihapus',
             heading: 'Berhasil',
             variant: 'success',
         );
@@ -30,8 +31,13 @@ class Index extends Component
     #[On('driver-updated')]
     public function render()
     {
+        $driverName = trim($this->driverName ?? '');
+        $drivers = Driver::when($driverName !== '', function($query) use ($driverName) {
+            return $query->where('name', 'ilike', '%'.trim($driverName).'%');
+        })->orderBy('name', 'asc');
+        // logger()->info('sql', [$drivers->toSql()]);
         return view('livewire.drivers.index', [
-            'drivers' => Driver::latest()->paginate(10),
+            'drivers' => $drivers->paginate(10),
         ]);
     }
 }

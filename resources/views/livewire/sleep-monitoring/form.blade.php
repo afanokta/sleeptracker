@@ -11,19 +11,19 @@
     <div class="bg-white dark:bg-zinc-900 rounded-lg shadow-lg p-6 space-y-6">
         <div class="text-center">
             <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-                {{ __('Monitoring Tidur Supir (AMT)') }}
+                {{ __('IstirahatBermutuPetrofin') }}
             </h1>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-                {{ __('Form Input Monitoring Tidur') }}
+                {{ __('Monitoring jam tidur Awak Mobil Tangki (AMT)') }}
             </p>
         </div>
 
         @if (!$showForm)
             <div class="space-y-4">
                 <flux:input
-                    label="{{ __('Pilih Nama Supir') }}"
+                    label="{{ __('Pilih Nama AMT') }}"
                     wire:model.live="driverSearch"
-                    placeholder="{{ __('Cari nama supir...') }}"
+                    placeholder="{{ __('Cari nama AMT...') }}"
                     autofocus
                 />
 

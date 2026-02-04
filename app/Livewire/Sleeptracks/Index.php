@@ -107,10 +107,16 @@ class Index extends Component
     public function render()
     {
         $query = SleepReport::with(['driver', 'sleeptracks']);
+        if(!isset($this->dateFrom)) {
+            $this->dateFrom = Carbon::today()->toDateString();
+        }
+        if(!isset($this->dateTo)) {
+            $this->dateTo = Carbon::today()->toDateString();
+        }
 
         if ($this->driverName) {
             $query->whereHas('driver', function ($q) {
-                $q->where('name', 'like', '%'.trim($this->driverName).'%');
+                $q->where('name', 'ilike', '%'.trim($this->driverName).'%');
             });
         }
 
