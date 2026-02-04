@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'admin',
-        //     'email' => 'admin@example.com',
-        // ]);
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@gmail.com',
+        ]);
 
         // Driver::create([
         //     'name' => 'suryanto',

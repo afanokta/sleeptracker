@@ -1,6 +1,6 @@
 FROM php:8.5-fpm-alpine
 
-# Install system dependencies
+# Install system dependencies & PostgreSQL dev tools
 RUN apk add --no-cache \
     bash \
     curl \
@@ -11,9 +11,9 @@ RUN apk add --no-cache \
     g++ \
     make \
     autoconf \
-    postgresql-dev  # <--- Library PostgreSQL untuk Alpine
+    postgresql-dev
 
-# Install PHP extensions
+# Install PHP extensions (PDO Postgres & Postgres)
 RUN docker-php-ext-install pdo_pgsql pgsql gd zip intl
 
 # Install Composer
