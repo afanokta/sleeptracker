@@ -1,7 +1,7 @@
 <section class="w-full">
     <x-heading
         title="{{ __('Dashboard Statistik Tidur') }}"
-        subtitle="{{ __('Ringkasan data AMT & laporan tidur berdasarkan periode') }}"
+        subtitle="{{ __('Ringkasan data laporan tidur berdasarkan periode') }}"
     />
 
     <div class="flex flex-col gap-6">
