@@ -80,7 +80,7 @@
                         label="{{ __('Waktu') }}"
                         type="text"
                         id="waktu"
-                        wire:model="time"
+                        wire:model.defer="time"
                         :error="$errors->first('time')"
                     />
                 </div>

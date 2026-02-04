@@ -85,7 +85,7 @@ class Form extends Component
             'date' => 'required|date',
             'time' => 'required',
             'location' => 'required|in:Rumah,SPBU,Lainnya',
-            'photo' => 'nullable|image|max:10240',
+            'photo' => 'required|image|max:10240',
         ];
 
         if ($this->location === 'Lainnya') {
