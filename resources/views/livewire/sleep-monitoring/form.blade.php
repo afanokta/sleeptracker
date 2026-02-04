@@ -122,7 +122,7 @@
                     <input
                         type="file"
                         wire:model="photo"
-                        accept="*"
+                        accept="images/*"
                         capture="environment"
                         class="block w-full text-sm text-gray-500 dark:text-gray-400
                                file:mr-4 file:py-2 file:px-4

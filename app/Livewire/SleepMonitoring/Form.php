@@ -20,21 +20,21 @@ class Form extends Component
     public $showForm = false;
     public $drivers = [];
 
-    #[Validate('required|exists:drivers,id')]
+    #[Validate]
     public $selectedDriverId = '';
 
-    #[Validate('required|date')]
+    #[Validate]
     public $date = '';
 
-    #[Validate('required')]
+    #[Validate]
     public $time = '';
 
-    #[Validate('required|in:Rumah,SPBU,Lainnya')]
+    #[Validate]
     public $location = '';
 
     public $customLocation = '';
 
-    #[Validate('nullable|image|max:10240')]
+    #[Validate]
     public $photo;
 
     public $latitude = null;
@@ -43,6 +43,17 @@ class Form extends Component
     public ?SleepReport $lastReport = null;
     public $historyReport = [];
     public $formType;
+
+    public function rules()
+    {
+        return [
+            'selectedDriverId' => 'required|exists:drivers,id',
+            'date' => 'required|date',
+            'time' => 'required',
+            'location' => 'required|in:Rumah,SPBU,Lainnya',
+            'photo' => 'nullable',
+        ];
+    }
 
     public function mount(): void
     {
@@ -85,7 +96,7 @@ class Form extends Component
             'date' => 'required|date',
             'time' => 'required',
             'location' => 'required|in:Rumah,SPBU,Lainnya',
-            'photo' => 'required',
+            'photo' => 'nullable',
         ];
 
         if ($this->location === 'Lainnya') {
