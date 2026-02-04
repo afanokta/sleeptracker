@@ -75,7 +75,7 @@
                     />
                 </div>
 
-                <div>
+                <div wire:ignore>
                     <flux:input
                         label="{{ __('Waktu') }}"
                         type="text"
