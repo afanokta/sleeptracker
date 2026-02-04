@@ -76,7 +76,7 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
                 <h2 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100 mb-3">
-                    {{ __('Riwayat Sleep & Awake') }}
+                    {{ __('Riwayat Tidur & Bangun') }}
                 </h2>
 
                 @if ($sleepReport->sleeptracks->count() > 0)
@@ -124,7 +124,7 @@
                                                 {{ $track->input_type === 'sleep' 
                                                     ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300' 
                                                     : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300' }}">
-                                                {{ strtoupper($track->input_type) }}
+                                                {{ strtoupper($track->input_type == 'wake' ? 'Bangun' : 'Tidur') }}
                                             </span>
                                         </td>
                                         <td class="px-4 py-2 text-xs text-zinc-600 dark:text-zinc-400">
@@ -134,7 +134,7 @@
                                             {{ $track->location }}
                                         </td>
                                         <td class="px-4 py-2 text-xs text-zinc-600 dark:text-zinc-400">
-                                            <img src="{{ asset($track->photo) }}" alt="Foto Bukti" width="200">
+                                            <flux:avatar href="{{ Storage::url($track->photo) }}" src="{{ Storage::url($track->photo) }}" />
                                         </td>
                                     </tr>
                                 @endforeach
@@ -150,7 +150,7 @@
 
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 space-y-4">
                 <h2 class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
-                    {{ __('Maps Lokasi Sleep/Awake') }}
+                    {{ __('Maps Lokasi Tidur / Bangun') }}
                 </h2>
 
                 @if ($sleepReport->sleeptracks->whereNotNull('lat')->whereNotNull('long')->count() > 0)
@@ -161,7 +161,7 @@
                                     <div class="px-3 py-2 border-b border-zinc-200 dark:border-zinc-700 flex items-center justify-between">
                                         <div>
                                             <p class="text-xs font-semibold text-zinc-900 dark:text-zinc-100">
-                                                {{ strtoupper($track->input_type) }} - {{ $sleepReport->driver->name ?? '' }}
+                                                {{ strtoupper($track->input_type == 'wake' ? 'Bangun' : 'Tidur') }} - {{ $sleepReport->driver->name ?? '' }}
                                             </p>
                                             <p class="text-[11px] text-zinc-500 dark:text-zinc-400">
                                                 {{ $track->input_time?->format('d/m/Y H:i') }} • {{ $track->location }}

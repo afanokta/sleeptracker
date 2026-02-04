@@ -34,11 +34,15 @@ class Form extends Component
 
     public $customLocation = '';
 
-    #[Validate('nullable|image|max:5120')]
+    #[Validate('nullable|image|max:10240')]
     public $photo;
 
     public $latitude = null;
     public $longitude = null;
+
+    public ?SleepReport $lastReport = null;
+    public $historyReport = [];
+    public $formType;
 
     public function mount(): void
     {
@@ -57,6 +61,15 @@ class Form extends Component
         $this->selectedDriverId = $driverId;
         $this->showForm = true;
         $this->driverSearch = '';
+        $this->historyReport = SleepReport::with('sleeptracks')->where('driver_id', $driverId)->where('date', '>=', now()->subDays(7))->orderBy('id', 'desc')->get();
+        $this->lastReport = $this->historyReport[0] ?? null;
+        if($this->lastReport) {
+            $this->formType = $this->lastReport->completed ? 'sleep' : 'wake';
+        } else {
+            $this->formType = 'sleep';
+        }
+        $this->dispatch('get-location');
+
     }
 
     public function setLocation($latitude, $longitude): void
@@ -72,7 +85,7 @@ class Form extends Component
             'date' => 'required|date',
             'time' => 'required',
             'location' => 'required|in:Rumah,SPBU,Lainnya',
-            'photo' => 'nullable|image|max:5120',
+            'photo' => 'nullable|image|max:10240',
         ];
 
         if ($this->location === 'Lainnya') {
@@ -82,19 +95,23 @@ class Form extends Component
         $this->validate($rules);
 
         // Get or create sleep report for the driver and date
-        $sleepReport = SleepReport::firstOrCreate(
-            [
-                'driver_id' => $this->selectedDriverId,
-                'date' => $this->date,
-            ],
-            [
-                'status' => 'pending',
-                'completed' => false,
-            ]
-        );
+        // $lastReport = SleepReport::where('driver_id', $this->selectedDriverId)->orderBy('id', 'desc')->first();
+
+
+        if($this->lastReport === null || $this->lastReport->status == 'completed') {
+            $this->lastReport = SleepReport::Create(
+                [
+                    'driver_id' => $this->selectedDriverId,
+                    'date' => $this->date,
+                    'status' => 'pending',
+                    'completed' => false,
+                ]
+            );
+        } 
+
 
         // Determine input type (sleep or wake)
-        $existingTracks = $sleepReport->sleeptracks()->count();
+        $existingTracks = $this->lastReport->sleeptracks()->count();
         $inputType = $existingTracks === 0 ? 'sleep' : 'wake';
 
         // Handle photo upload
@@ -108,7 +125,7 @@ class Form extends Component
         $inputDateTime = $this->date . ' ' . $this->time;
 
         Sleeptrack::create([
-            'sleep_report_id' => $sleepReport->id,
+            'sleep_report_id' => $this->lastReport->id,
             'input_type' => $inputType,
             'input_time' => $inputDateTime,
             'location' => $locationValue,
@@ -119,7 +136,7 @@ class Form extends Component
 
         // Update sleep report status
         if ($inputType === 'wake') {
-            $sleepReport->update([
+            $this->lastReport->update([
                 'status' => 'completed',
                 'completed' => true,
             ]);

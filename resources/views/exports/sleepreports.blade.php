@@ -27,28 +27,48 @@
     </style>
 </head>
 <body>
-    <h3 class="text-center">Laporan Sleepreport Supir (AMT)</h3>
+    <h3 class="text-center">Laporan Jam Tidur Awak Mobil Tangki (AMT)</h3>
 
     <table>
         <thead>
             <tr>
-                <th>ID</th>
                 <th>Nama AMT</th>
-                <th>Status</th>
                 <th>Tanggal</th>
                 <th>Kecukupan Tidur</th>
                 <th>Durasi (jam)</th>
+                <th>Lokasi</th>
+                <th>Foto</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($reports as $report)
                 <tr>
-                    <td class="text-center">{{ $report->id }}</td>
                     <td>{{ $report->driver->name ?? '-' }}</td>
-                    <td>{{ ucfirst($report->status) }}</td>
                     <td class="text-center">{{ $report->date?->format('d/m/Y') }}</td>
                     <td class="text-center">{{ $report->sleep_category }}</td>
                     <td class="text-right">{{ number_format($report->sleep_duration_hours, 1) }}</td>
+                    <td class="text-center">
+                        @php
+                            $sleep = $report->sleeptracks[0];
+                            $fotoTidur =  url(Storage::url($sleep->photo));
+                            $mapsUrl = "https://www.google.com/maps?q={$sleep->lat},{$sleep->long}";
+                            if(isset($report->sleeptracks[1])) {
+                                $wake = $report->sleeptracks[1];
+                                $fotoBangun = url(Storage::url($wake->photo));
+                                $mapsUrl2 = "https://www.google.com/maps?q={$wake->lat},{$wake->long}";
+                            }
+                        @endphp
+                        <a href="{{ $mapsUrl }}">Tidur</a>
+                        @if (isset($report->sleeptracks[1]))
+                            <a href="{{ $mapsUrl2 }}">Bangun</a>
+                        @endif
+                    </td>
+                    <td class="text-center">
+                        <a href="{{ $fotoTidur }}">Foto Tidur</a>
+                        @if (isset($report->sleeptracks[1]))
+                            <a href="{{ $fotoBangun }}">Foto Bangun</a>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
