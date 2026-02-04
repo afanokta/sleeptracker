@@ -11,14 +11,36 @@ use Illuminate\Support\Facades\Hash;
 
 class UserForm extends Form
 {
-    #[Validate('required|string|max:255', message: 'Nama harus diisi')]
+    #[Validate]
     public string $name = '';
 
-    #[Validate('required|string|max:255', message: 'Email harus diisi')]
+    #[Validate]
     public string $email = '';
 
-    #[Validate('string|max:255', message: 'Password harus diisi')]
+    #[Validate]
     public string $password = '';
+
+        /**
+     * Get the validation rules for the form.
+     *
+     * @return array<string, array<int, \Illuminate\Contracts\Validation\Rule|array<mixed>|string>>
+     */
+    public function rules(): array
+    {
+        return [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    public function messages() {
+        return [
+            'name.required' => 'Nama harus diisi',
+            'name.max:255' => 'Nama tidak boleh lebih dari 255 karakter',
+            'email.required' => 'Email harus diisi',
+            'email.max:255' => 'Email tidak boleh lebih dari 255 karakter'
+        ];
+    }
 
     public function setUser(User $user): void
     {
