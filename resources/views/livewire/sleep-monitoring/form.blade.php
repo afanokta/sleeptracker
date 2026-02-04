@@ -80,8 +80,13 @@
                         label="{{ __('Waktu') }}"
                         type="text"
                         id="waktu"
-                        wire:model.defer="time"
-                        wire:ignore
+                        wire:model="time"
+                        x-init="flatpickr($el, { 
+                            enableTime: true,
+                            noCalendar: true,
+                            dateFormat: 'H:i',   // format yang disimpan
+                            time_24hr: true,     // INI KUNCINYA
+                            allowInput: true,})"
                         :error="$errors->first('time')"
                     />
                 </div>
@@ -256,14 +261,14 @@
     });
 
     function initFlatpickr() {
-        console.log('initflatpickr')
-        flatpickr("#waktu", {
-            enableTime: true,
-            noCalendar: true,
-            dateFormat: 'H:i',   // format yang disimpan
-            time_24hr: true,     // INI KUNCINYA
-            allowInput: true,
-        });
+        // console.log('initflatpickr')
+        // flatpickr("#waktu", {
+        //     enableTime: true,
+        //     noCalendar: true,
+        //     dateFormat: 'H:i',   // format yang disimpan
+        //     time_24hr: true,     // INI KUNCINYA
+        //     allowInput: true,
+        // });
     }
 
 </script>
