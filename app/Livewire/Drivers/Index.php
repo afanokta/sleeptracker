@@ -35,7 +35,6 @@ class Index extends Component
         $drivers = Driver::when($driverName !== '', function($query) use ($driverName) {
             return $query->where('name', 'ilike', '%'.trim($driverName).'%');
         })->orderBy('name', 'asc');
-        // logger()->info('sql', [$drivers->toSql()]);
         return view('livewire.drivers.index', [
             'drivers' => $drivers->paginate(10),
         ]);
