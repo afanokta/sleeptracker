@@ -260,15 +260,35 @@
         });
     });
 
-    function initFlatpickr() {
-        // console.log('initflatpickr')
-        // flatpickr("#waktu", {
-        //     enableTime: true,
-        //     noCalendar: true,
-        //     dateFormat: 'H:i',   // format yang disimpan
-        //     time_24hr: true,     // INI KUNCINYA
-        //     allowInput: true,
-        // });
-    }
+
+    document.getElementById('photo').addEventListener('change', async (e) => {
+        const file = e.target.files[0]
+        if (!file) return
+
+        const img = new Image()
+        img.src = URL.createObjectURL(file)
+
+        img.onload = () => {
+            const canvas = document.createElement('canvas')
+            const MAX_WIDTH = 1600
+            const scale = MAX_WIDTH / img.width
+
+            canvas.width = MAX_WIDTH
+            canvas.height = img.height * scale
+
+            const ctx = canvas.getContext('2d')
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+            canvas.toBlob(blob => {
+                const resizedFile = new File([blob], file.name, {
+                    type: 'image/jpeg',
+                    lastModified: Date.now()
+                })
+
+                // kirim ke Livewire
+                Livewire.dispatch('photo-resized', { file: resizedFile })
+            }, 'image/jpeg', 0.2)
+        }
+    })
 
 </script>

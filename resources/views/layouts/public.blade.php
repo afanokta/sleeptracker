@@ -3,7 +3,7 @@
     <head>
         @include('partials.head')
     </head>
-    <body class="min-h-screen bg-white dark:bg-zinc-800">
+    <body class="min-h-screen bg-white dark:bg-zinc-800" x-init="$flux.appearance = 'light'">
         <div class="min-h-screen flex flex-col">
             {{ $slot }}
         </div>

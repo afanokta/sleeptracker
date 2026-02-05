@@ -79,6 +79,7 @@
         @endphp
 
         <div class="grid gap-4 md:grid-cols-2">
+            @if (false)
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
                 <p class="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-200">
                     {{ __('Persentase Fit Kerja') }}
@@ -91,6 +92,7 @@
                     ></canvas>
                 </div>
             </div>
+            @endif
 
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
                 <p class="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-200">

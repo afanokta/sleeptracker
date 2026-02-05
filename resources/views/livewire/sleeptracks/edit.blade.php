@@ -1,7 +1,7 @@
 <section class="w-full">
     <x-heading 
         title="{{ __('Monitoring Jam Tidur AMT') }}" 
-        subtitle="{{ __('Detail & Riwayat Tidur Supir (AMT)') }}" 
+        subtitle="{{ __('Detail Riwayat Tidur AMT') }}" 
     />
 
     <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
