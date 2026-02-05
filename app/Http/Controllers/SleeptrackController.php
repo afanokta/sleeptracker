@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\SleepReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\SleepReportExport;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class SleeptrackController extends Controller
@@ -73,7 +75,7 @@ class SleeptrackController extends Controller
             $driverName = $request->string('driverName')->trim();
 
             $query->whereHas('driver', function ($q) use ($driverName) {
-                $q->where('name', 'like', '%'.$driverName.'%');
+                $q->where('name', 'ilike', '%'.$driverName.'%');
             });
         }
 
@@ -100,43 +102,53 @@ class SleeptrackController extends Controller
         return $reports;
     }
 
-    public function exportExcel(Request $request): StreamedResponse
+    public function exportExcel(Request $request)
     {
         $reports = $this->filteredReports($request);
 
-        $fileName = 'sleepreports_'.Carbon::now()->format('Ymd_His').'.csv';
+        $fileName = 'sleepreports_'.Carbon::now()->format('Ymd_His');
 
-        $headers = [
-            'Content-Type' => 'text/csv; charset=UTF-8',
-            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
-        ];
-
-        $columns = ['ID', 'Nama AMT', 'Status', 'Tanggal', 'Kecukupan Tidur', 'Durasi (jam)'];
-
-        $callback = function () use ($reports, $columns) {
-            $handle = fopen('php://output', 'w');
-
-            // BOM for Excel UTF-8
-            fwrite($handle, "\xEF\xBB\xBF");
-
-            fputcsv($handle, $columns);
-
-            foreach ($reports as $report) {
-                fputcsv($handle, [
-                    $report->id,
-                    $report->driver->name ?? '-',
-                    $report->status,
-                    optional($report->date)->format('d/m/Y'),
-                    $report->sleep_category,
-                    number_format($report->sleep_duration_hours, 1),
-                ]);
-            }
-
-            fclose($handle);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return Excel::download(new SleepReportExport($reports),"${fileName}.xlsx");
+        // return response()->stream($callback, 200, $headers);
     }
+
+    // public function exportExcel(Request $request): StreamedResponse
+    // {
+    //     $reports = $this->filteredReports($request);
+
+    //     $fileName = 'sleepreports_'.Carbon::now()->format('Ymd_His').'.csv';
+
+    //     $headers = [
+    //         'Content-Type' => 'text/csv; charset=UTF-8',
+    //         'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+    //     ];
+
+    //     $columns = ['ID', 'Nama AMT', 'Status', 'Tanggal', 'Kecukupan Tidur', 'Durasi (jam)'];
+
+    //     $callback = function () use ($reports, $columns) {
+    //         $handle = fopen('php://output', 'w');
+
+    //         // BOM for Excel UTF-8
+    //         fwrite($handle, "\xEF\xBB\xBF");
+
+    //         fputcsv($handle, $columns);
+
+    //         foreach ($reports as $report) {
+    //             fputcsv($handle, [
+    //                 $report->id,
+    //                 $report->driver->name ?? '-',
+    //                 $report->status,
+    //                 optional($report->date)->format('d/m/Y'),
+    //                 $report->sleep_category,
+    //                 number_format($report->sleep_duration_hours, 1),
+    //             ]);
+    //         }
+
+    //         fclose($handle);
+    //     };
+
+    //     return response()->stream($callback, 200, $headers);
+    // }
 
     public function exportPdf(Request $request)
     {

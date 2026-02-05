@@ -53,8 +53,8 @@
     --color-zinc-950: var(--color-slate-950);
 }
 @theme {
-    --color-accent: var(--color-blue-500);
-    --color-accent-content: var(--color-blue-600);
+    --color-accent: var(--color-blue-700);
+    --color-accent-content: var(--color-blue-800);
     --color-accent-foreground: var(--color-white);
 }
 @layer theme {

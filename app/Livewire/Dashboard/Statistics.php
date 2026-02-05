@@ -48,6 +48,7 @@ class Statistics extends Component
                 $this->dateTo = null,
             ],
         };
+        $this->dispatch('charts-updated');
     }
 
     public function render()

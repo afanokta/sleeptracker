@@ -79,8 +79,7 @@
         @endphp
 
         <div class="grid gap-4 md:grid-cols-2">
-            @if (false)
-            <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
+            <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 hidden">
                 <p class="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-200">
                     {{ __('Persentase Fit Kerja') }}
                 </p>
@@ -92,7 +91,6 @@
                     ></canvas>
                 </div>
             </div>
-            @endif
 
             <div class="rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4">
                 <p class="mb-3 text-sm font-medium text-zinc-700 dark:text-zinc-200">
@@ -111,7 +109,7 @@
 </section>
 
 <script>
-    window.initSleepDashboardCharts = function () {
+    function initSleepDashboardCharts () {
         if (typeof Chart === 'undefined') {
             return;
         }
@@ -136,6 +134,7 @@
 
         const baseOptions = {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
@@ -173,7 +172,12 @@
         });
     };
 
-    document.addEventListener('DOMContentLoaded', window.initSleepDashboardCharts);
-    document.addEventListener('livewire:navigated', window.initSleepDashboardCharts);
+    document.addEventListener('livewire:initialized', () => {
+        Livewire.on('charts-updated', () => {
+            initSleepDashboardCharts();
+        });
+
+        initSleepDashboardCharts();
+    });
 </script>
 

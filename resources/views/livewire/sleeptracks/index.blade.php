@@ -42,7 +42,13 @@
                         variant="outline"
                         size="sm"
                         tag="a"
-                        href="{{ route('sleeptrack.export.pdf', request()->query()) }}"
+                        href="{{ route('sleeptrack.export.pdf', [
+                                'driverName' => $driverName,
+                                'sleepCategory' => $sleepCategory,
+                                'dateFrom' => $dateFrom,
+                                'dateTo' => $dateTo,
+                                'quickRange' => $quickRange,
+                            ]) }}"
                     >
                         {{ __('Export PDF') }}
                     </flux:button>
@@ -50,7 +56,13 @@
                         variant="outline"
                         size="sm"
                         tag="a"
-                        href="{{ route('sleeptrack.export.excel', request()->query()) }}"
+                        href="{{ route('sleeptrack.export.excel', [
+                                'driverName' => $driverName,
+                                'sleepCategory' => $sleepCategory,
+                                'dateFrom' => $dateFrom,
+                                'dateTo' => $dateTo,
+                                'quickRange' => $quickRange,
+                            ]) }}"
                     >
                         {{ __('Export Excel') }}
                     </flux:button>
