@@ -51,7 +51,7 @@ class Form extends Component
             'date' => 'required|date',
             'time' => 'required',
             'location' => 'required|in:Rumah,SPBU,Lainnya',
-            'photo' => 'nullable',
+            'photo' => 'required',
         ];
     }
 
