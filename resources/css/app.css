@@ -76,6 +76,10 @@
     }
 }
 
+/* .text-zinc-500{
+    color: var(--color-white);
+} */
+
 [data-flux-field]:not(ui-radio, ui-checkbox) {
     @apply grid gap-2;
 }

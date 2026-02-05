@@ -4,24 +4,24 @@
         @include('partials.head')
     </head>
     <body class="min-h-screen bg-white dark:bg-zinc-800" x-init="$flux.appearance = 'Light'">
-        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
+        <flux:sidebar sticky collapsible="mobile" class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 !bg-accent-content">
             <flux:sidebar.header>
-                <x-app-logo :sidebar="true" href="{{ route('dashboard') }}" wire:navigate />
+                <x-app-logo :sidebar="true" class="!text-white" href="{{ route('dashboard') }}" wire:navigate />
                 <flux:sidebar.collapse class="lg:hidden" />
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Dashboard')" class="grid">
-                    <flux:sidebar.item icon="squares-2x2" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:sidebar.group class="grid !text-white">
+                    <flux:sidebar.item  class="[&:not([data-current])]:!text-white " icon="squares-2x2" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="user-group" :href="route('driver.index')" :current="request()->routeIs('driver.*')" wire:navigate>
+                    <flux:sidebar.item  class="[&:not([data-current])]:!text-white " icon="user-group" :href="route('driver.index')" :current="request()->routeIs('driver.*')" wire:navigate>
                         {{ __('AMT') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="users" :href="route('user.index')" :current="request()->routeIs('user.*')" wire:navigate>
+                    <flux:sidebar.item  class="[&:not([data-current])]:!text-white " icon="users" :href="route('user.index')" :current="request()->routeIs('user.*')" wire:navigate>
                         {{ __('Admin') }}
                     </flux:sidebar.item>
-                    <flux:sidebar.item icon="circle-stack" :href="route('sleeptrack.index')" :current="request()->routeIs('sleeptrack.*')" wire:navigate>
+                    <flux:sidebar.item  class="[&:not([data-current])]:!text-white " icon="circle-stack" :href="route('sleeptrack.index')" :current="request()->routeIs('sleeptrack.*')" wire:navigate>
                         {{ __('Data Monitoring') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
@@ -29,7 +29,7 @@
 
             <flux:spacer />
 
-            <x-desktop-user-menu class="hidden lg:block" :name="auth()->user()->name" />
+            <x-desktop-user-menu class="hidden lg:block [&_*]:text-white" :name="auth()->user()->name" />
         </flux:sidebar>
 
         <!-- Mobile User Menu -->
@@ -53,7 +53,7 @@
                                     :initials="auth()->user()->initials()"
                                 />
 
-                                <div class="grid flex-1 text-start text-sm leading-tight">
+                                <div class="grid flex-1 text-start text-sm leading-tight [&_*]:text-white">
                                     <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
                                     <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
                                 </div>

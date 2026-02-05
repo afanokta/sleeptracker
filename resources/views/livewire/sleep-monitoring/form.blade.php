@@ -115,11 +115,32 @@
                     </div>
                 @endif
 
-                <div>
+                <div x-data="{
+                        async compressAndUpload(e) {
+                            const file = e.target.files[0]
+                            if (!file) return
+                
+                            const options = {
+                                maxSizeMB: 2,           // target final size
+                                maxWidthOrHeight: 1600, // resolusi aman
+                                useWebWorker: true
+                            }
+                
+                            const compressedFile = await compressImage(file, options)
+                
+                            // kirim ke Livewire
+                            @this.upload(
+                                'photo',
+                                compressedFile,
+                                () => {},
+                                (err) => { console.error(err) }
+                            )
+                        }
+                    }">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {{ __('Foto Bukti') }}
                     </label>
-                    <input
+                    {{-- <input
                         type="file"
                         wire:model="photo"
                         accept="images/*"
@@ -132,6 +153,21 @@
                                hover:file:bg-blue-100
                                dark:file:bg-blue-900 dark:file:text-blue-300
                                dark:hover:file:bg-blue-800"
+                    /> --}}
+                    <input
+                        class="block w-full text-sm text-gray-500 dark:text-gray-400
+                               file:mr-4 file:py-2 file:px-4
+                               file:rounded-md file:border-0
+                               file:text-sm file:font-semibold
+                               file:bg-blue-50 file:text-blue-700
+                               hover:file:bg-blue-100
+                               dark:file:bg-blue-900 dark:file:text-blue-300
+                               dark:hover:file:bg-blue-800"
+                        type="file"
+                        x-ref="photo"
+                        accept="image/*"
+                        capture="environment"
+                        @change="compressAndUpload"
                     />
                     @error('photo')
                         <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -253,42 +289,40 @@
     }
 
     document.addEventListener('livewire:init', () => {
-        initFlatpickr();
         Livewire.on('get-location', () => {
             getCurrentLocation();
-            initFlatpickr();
         });
     });
 
 
-    document.getElementById('photo').addEventListener('change', async (e) => {
-        const file = e.target.files[0]
-        if (!file) return
+    // document.getElementById('photo').addEventListener('change', async (e) => {
+    //     const file = e.target.files[0]
+    //     if (!file) return
 
-        const img = new Image()
-        img.src = URL.createObjectURL(file)
+    //     const img = new Image()
+    //     img.src = URL.createObjectURL(file)
 
-        img.onload = () => {
-            const canvas = document.createElement('canvas')
-            const MAX_WIDTH = 1600
-            const scale = MAX_WIDTH / img.width
+    //     img.onload = () => {
+    //         const canvas = document.createElement('canvas')
+    //         const MAX_WIDTH = 1600
+    //         const scale = MAX_WIDTH / img.width
 
-            canvas.width = MAX_WIDTH
-            canvas.height = img.height * scale
+    //         canvas.width = MAX_WIDTH
+    //         canvas.height = img.height * scale
 
-            const ctx = canvas.getContext('2d')
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    //         const ctx = canvas.getContext('2d')
+    //         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-            canvas.toBlob(blob => {
-                const resizedFile = new File([blob], file.name, {
-                    type: 'image/jpeg',
-                    lastModified: Date.now()
-                })
+    //         canvas.toBlob(blob => {
+    //             const resizedFile = new File([blob], file.name, {
+    //                 type: 'image/jpeg',
+    //                 lastModified: Date.now()
+    //             })
 
-                // kirim ke Livewire
-                Livewire.dispatch('photo-resized', { file: resizedFile })
-            }, 'image/jpeg', 0.2)
-        }
-    })
+    //             // kirim ke Livewire
+    //             Livewire.dispatch('photo-resized', { file: resizedFile })
+    //         }, 'image/jpeg', 0.2)
+    //     }
+    // })
 
 </script>

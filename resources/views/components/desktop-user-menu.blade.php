@@ -4,6 +4,7 @@
         :initials="auth()->user()->initials()"
         icon:trailing="chevrons-up-down"
         data-test="sidebar-menu-button"
+        class="[&_span]:text-white"
     />
 
     <flux:menu>
@@ -13,7 +14,7 @@
                 :initials="auth()->user()->initials()"
             />
             <div class="grid flex-1 text-start text-sm leading-tight">
-                <flux:heading class="truncate">{{ auth()->user()->name }}</flux:heading>
+                <flux:heading class="truncate ">{{ auth()->user()->name }}</flux:heading>
                 <flux:text class="truncate">{{ auth()->user()->email }}</flux:text>
             </div>
         </div>
